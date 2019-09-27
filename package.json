@@ -1,11 +1,11 @@
 {
-  "name": "w-datepicker",
+  "name": "@wujiaxian/datepicker",
   "description": "A C-End Date Selector Component Based on Vue Development",
   "version": "1.0.0",
   "author": "wujia <web@wujiabk.com>",
   "main": "dist/Wdatepicker.umd.min.js",
   "style": "dist/Wdatepicker.css",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wujiabk/datepicker/issues"
   },
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "https://github.com/wujiabk/datepicker"
   },
-  "keywords": ["vue-datepicler","datepicker","w-datepicker","Wdatepicker"],
+  "keywords": ["vue-datepicler","datepicker","w-datepicker","Wdatepicker","@wujiaxian/datepicker"],
   "private": false,
   "scripts": {
     "dev": "vue-cli-service serve",

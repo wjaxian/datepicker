@@ -6,7 +6,6 @@
     @click.stop="showDatetimePicker" 
     @focus="example('focus')" 
     @blur="example('blur')"
-    @change="change" 
     @input="example('input', $event.target.value)"
     @keyup.enter="switchingPickerStatus($event, 'keyup')" 
     :value="nowDate" 
@@ -239,6 +238,7 @@ export default {
   methods: {
     change (e) {
       let v = e.target.value
+      console.log(!this.dateReg.test(v))
       if(!this.dateReg.test(v)) return !v && (this.currentDate = '')
       this.example('change', this.selectDate(this.datepicker.judgeType(v)))
     },
@@ -324,6 +324,9 @@ export default {
   watch: {
     'datepicker.currentMonthAllDate' (monthAllDate) {
       this.currentMonthAllDate = monthAllDate
+    },
+    currentDate (nv) {
+      this.example('change', nv)
     }
   },
   created () {
@@ -490,7 +493,7 @@ export default {
           &:hover {
             color: $date_hover_color;
           }
-          section {
+          div > section {
             &.square {
               border-radius: 3px;
             }
@@ -529,6 +532,9 @@ export default {
             cursor: not-allowed;
             > div > section, > div > section:hover {
               background: transparent;
+            }
+            > div > section.on {
+              background: $date_status;
             }
           }
         }

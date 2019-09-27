@@ -1,6 +1,6 @@
 <template>
 <section>
-  <w-datepicker v-model="time" @change="change" @focus="focus" @blur="blur" @disabledDate="disabledDate">
+  <w-datepicker v-model="time" :maxDate="maxDate" :disabledDate="disabledDateFn" @change="change" @focus="focus" @blur="blur" @disabledDate="disabledDate">
     <!-- <template v-slot:close-icon>
       x
     </template> -->
@@ -25,7 +25,9 @@ export default {
   name: 'app',
   data () {
     return {
-      time: ''
+      maxDate: new Date(),
+      time: '2019-09-30',
+      disabledDateArr: ['2019-09-10', '2019-09-09']
     }
   },
   methods: {
@@ -49,6 +51,10 @@ export default {
     },
     change (value) {
       // console.log(value)
+    },
+    disabledDateFn (selectDate, monthDate, nowDate) {
+      let date = new Date('2019-09-10')
+      return date.getDate() === monthDate.getDate()
     },
     disabledDate (time) {
       // console.log(time)
