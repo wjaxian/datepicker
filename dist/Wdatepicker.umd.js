@@ -3324,11 +3324,11 @@ if (typeof window !== 'undefined') {
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0e142547-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=29231ea8&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0e142547-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=76f6a350&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"wj-datepicker"},[_c('input',{ref:"ipt",staticClass:"wj-datepicker-ipt",class:{'ipt-disabled': _vm.disabled},attrs:{"type":"text","placeholder":_vm.placeholder,"readonly":!_vm.editable,"disabled":_vm.disabled},domProps:{"value":_vm.nowDate},on:{"click":function($event){$event.stopPropagation();return _vm.showDatetimePicker($event)},"focus":function($event){return _vm.example('focus')},"blur":function($event){return _vm.example('blur')},"change":_vm.change,"input":function($event){return _vm.example('input', $event.target.value)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.switchingPickerStatus($event, 'keyup')}}}),(!_vm.disabled && _vm.clearBtn)?_c('section',{staticClass:"wj-close",on:{"click":function($event){_vm.currentDate = ''}}},[_vm._t("close-icon",[_c('i',{class:_vm.closeIconClass || 'iconfont icon-guanbi'})])],2):_vm._e(),_c('section',{staticClass:"wj-date-icon"},[_vm._t("date-icon",[_c('i',{class:_vm.dateIconClass || 'iconfont icon-riqi'})])],2),_c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShowPicker),expression:"isShowPicker"}],staticClass:"wj-datepicker-content",class:{'on': _vm.isShowPicker},on:{"click":function($event){$event.stopPropagation();}}},[_c('header',{staticClass:"wj-datepicker-header"},[_vm._t("header",null,{"self":_vm._self}),_c('section',{staticClass:"wj-datepicker-header-tools"},[_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangzuo_o",attrs:{"title":"上一年"},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearPrev')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o",attrs:{"title":"上一月"},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthPrev')}}}),_c('section',{staticClass:"wj-datepicker-select-date"},[_vm._v(_vm._s(_vm.pickerDate))]),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangyou_o",attrs:{"title":"下一月"},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthNext')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangyou_o",attrs:{"title":"下一年"},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearNext')}}})])],2),_c('table',{staticClass:"wj-datepicker-body",attrs:{"border":"0","cellspacing":"0"}},[_c('thead',[_c('tr',[_c('td',[_vm._v("一")]),_c('td',[_vm._v("二")]),_c('td',[_vm._v("三")]),_c('td',[_vm._v("四")]),_c('td',[_vm._v("五")]),_c('td',[_vm._v("六")]),_c('td',[_vm._v("日")])])]),_c('tbody',_vm._l((_vm.currentMonthAllDate),function(item){return _c('tr',{key:item.index},_vm._l((item),function(v){return _c('td',{key:v.index,class:{
                 'otherTime': v.otherTime,
                 'disabled': v.disabledDate
-              },attrs:{"title":((v.year) + "-" + (v.month) + "-" + (v.date))},on:{"click":function($event){!v.otherTime && _vm.selectDate(v) || _vm.disabledHandle(v)}}},[_c('div',[_c('section',{class:{
+              },attrs:{"title":((v.year) + "-" + (v.month) + "-" + (v.date))},on:{"click":function($event){!v.otherTime && _vm.example('change', _vm.selectDate(v)) || _vm.disabledHandle(v)}}},[_c('div',[_c('section',{class:{
                     'square': _vm.selectState === 'square',
                     'circle': _vm.selectState === 'circle',
                     'current-on': v.isCurrentDate,
@@ -3337,7 +3337,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=29231ea8&
+// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=76f6a350&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.match.js
 var es6_regexp_match = __webpack_require__("4917");
@@ -4021,7 +4021,7 @@ var _validator = js_Wdatepicker.validator;
           break;
 
         case '':
-          !disabledDate && this.selectDate(time);
+          !disabledDate && this.example('change', this.selectDate(time));
           break;
       } // 返回当前操作信息
 
@@ -4055,6 +4055,7 @@ var _validator = js_Wdatepicker.validator;
     example: function example(eventName, value) {
       value = value || value === '' ? value : this;
       this.$emit(eventName, value);
+      return value;
     },
     // 显示控件
     showDatetimePicker: function showDatetimePicker() {
@@ -4126,6 +4127,7 @@ var _validator = js_Wdatepicker.validator;
     });
     this.currentMonthAllDate = this.datepicker.currentMonthAllDate;
     this.pickerDate = this.datepicker.formatDate(this.datepicker.judgeType(this.currentDate), 'YYYY年MM月');
+    this.currentDate && this.example('change', this.currentDate);
   },
   mounted: function mounted() {
     document.addEventListener('click', this.switchingPickerStatus);

@@ -6,6 +6,7 @@
     @click.stop="showDatetimePicker" 
     @focus="example('focus')" 
     @blur="example('blur')"
+    @change="change"
     @input="example('input', $event.target.value)"
     @keyup.enter="switchingPickerStatus($event, 'keyup')" 
     :value="nowDate" 
@@ -58,7 +59,7 @@
                 'disabled': v.disabledDate
               }"
               :title="`${v.year}-${v.month}-${v.date}`"
-              @click="!v.otherTime && selectDate(v) || disabledHandle(v)"
+              @click="!v.otherTime && example('change', selectDate(v)) || disabledHandle(v)"
             >
               <div>
                 <section 
@@ -238,7 +239,6 @@ export default {
   methods: {
     change (e) {
       let v = e.target.value
-      console.log(!this.dateReg.test(v))
       if(!this.dateReg.test(v)) return !v && (this.currentDate = '')
       this.example('change', this.selectDate(this.datepicker.judgeType(v)))
     },
@@ -255,7 +255,7 @@ export default {
           !disabledDate && this.datepicker.init(new Date(`${year}/${month}/${date}`))
           break
         case '':
-          !disabledDate && this.selectDate(time)
+          !disabledDate && this.example('change', this.selectDate(time))
           break
       }
       // 返回当前操作信息
@@ -281,6 +281,7 @@ export default {
     example (eventName, value) {
       value = value || value === '' ? value : this
       this.$emit(eventName, value)
+      return value
     },
     // 显示控件
     showDatetimePicker () {
@@ -324,9 +325,6 @@ export default {
   watch: {
     'datepicker.currentMonthAllDate' (monthAllDate) {
       this.currentMonthAllDate = monthAllDate
-    },
-    currentDate (nv) {
-      this.example('change', nv)
     }
   },
   created () {
@@ -341,6 +339,7 @@ export default {
     })
     this.currentMonthAllDate = this.datepicker.currentMonthAllDate
     this.pickerDate = this.datepicker.formatDate(this.datepicker.judgeType(this.currentDate), 'YYYY年MM月')
+    this.currentDate && this.example('change', this.currentDate)
   },
   mounted () {
     document.addEventListener('click', this.switchingPickerStatus)

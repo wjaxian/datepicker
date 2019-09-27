@@ -1,6 +1,6 @@
 <template>
 <section>
-  <w-datepicker v-model="time" :maxDate="maxDate" :disabledDate="disabledDateFn" @change="change" @focus="focus" @blur="blur" @disabledDate="disabledDate">
+  <w-datepicker v-model="time" :maxDate="maxDate" :disabledDate="disabledDateFn" @change="change" @focus="focus" @blur="blur" @disabledDate="disabledDate" :editable="true">
     <!-- <template v-slot:close-icon>
       x
     </template> -->
@@ -50,7 +50,7 @@ export default {
       // console.log(vcomponent)
     },
     change (value) {
-      // console.log(value)
+      console.log(value)
     },
     disabledDateFn (selectDate, monthDate, nowDate) {
       let date = new Date('2019-09-10')
