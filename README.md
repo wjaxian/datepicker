@@ -131,6 +131,7 @@ export default {
 ## Date Formatting
 
 String Formatting
+
 | Token | Desc                   | Example     |
 |-------|------------------------|-------------|
 | YYYY  | year                   | 2019        |
@@ -139,6 +140,7 @@ String Formatting
 | hh    | hour                   | 12          |
 | mm    | minute                 | 30          |
 | ss    | second                 | 30          |
+
 
 Number time stamp
 
