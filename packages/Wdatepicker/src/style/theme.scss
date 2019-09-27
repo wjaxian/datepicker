@@ -1,0 +1,15 @@
+$datepicker_bg: #fff !default;//日期框背景
+$font_color: #606266 !default;//字体颜色
+$date_status: #409eff !default;//当前选中的日期背景与边框颜色
+$on_color_status: #fff !default;//当前选中的日期字体颜色
+$disabled_date_color: #e8e8e8 !default;//不是当前日期颜色
+$date_hover_bg: #e6f7ff !default;//日期鼠标划过颜色
+$date_hover_color: #409eff !default;
+$border: #dcdfe6 !default;//边框颜色
+$week_bg: #fcfcfc !default;//周的编号背景
+$week_border: #ebeef5;//周编号下边框颜色
+$ipt_focus_border: #409eff !default;//input 获取焦点边框颜色
+$ipt_hover_border: #c0c4cc !default;//鼠标移入边框颜色
+$ipt_placeholder: #dcdfe6 !default;//input 空提示字体颜色
+$disabled_font: #c0c4cc !default;//禁用状态字体颜色
+$disabeld_bg: #f5f7fa !default;//禁用状态背景
