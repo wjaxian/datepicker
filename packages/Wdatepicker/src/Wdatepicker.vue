@@ -1,5 +1,5 @@
 <template>
-<section class="wj-datepicker">
+<section class="wj-datepicker" ref="datepicker-wrap">
   <input 
     class="wj-datepicker-ipt" 
     type="text"
@@ -25,28 +25,21 @@
   </section>
 
   <transition name="fade">
-    <section class="wj-datepicker-content" @click.stop v-show="isShowPicker" :class="{'on': isShowPicker}">
+    <section class="wj-datepicker-content" @click.stop v-show="isShowPicker" :class="{'on': isShowPicker}" ref="datepicker">
       <header class="wj-datepicker-header">
         <slot name="header" :self="_self"></slot>
         <section class="wj-datepicker-header-tools">
-          <section class="tab-btn iconfont icon-jiantou_yemian_xiangzuo_o" @click="switchoverYearAndMonth('yearPrev')" title="上一年"></section>
-          <section class="tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o" @click="switchoverYearAndMonth('monthPrev')" title="上一月"></section>
+          <section class="tab-btn iconfont icon-jiantou_yemian_xiangzuo_o" @click="switchoverYearAndMonth('yearPrev')"></section>
+          <section class="tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o" @click="switchoverYearAndMonth('monthPrev')"></section>
           <section class="wj-datepicker-select-date">{{pickerDate}}</section>
-          <section class="tab-btn iconfont icon-jiantou_liebiaoxiangyou_o" @click="switchoverYearAndMonth('monthNext')" title="下一月"></section>
-          <section class="tab-btn iconfont icon-jiantou_yemian_xiangyou_o" @click="switchoverYearAndMonth('yearNext')" title=
-          "下一年"></section>
+          <section class="tab-btn iconfont icon-jiantou_liebiaoxiangyou_o" @click="switchoverYearAndMonth('monthNext')"></section>
+          <section class="tab-btn iconfont icon-jiantou_yemian_xiangyou_o" @click="switchoverYearAndMonth('yearNext')"></section>
         </section>
       </header>
       <table class="wj-datepicker-body" border="0" cellspacing="0">
         <thead>
           <tr>
-            <td>一</td>
-            <td>二</td>
-            <td>三</td>
-            <td>四</td>
-            <td>五</td>
-            <td>六</td>
-            <td>日</td>
+            <td v-for="(item, i) in WEEKS" :key="i">{{t('datepicker.weeks.'+item)}}</td>
           </tr>
         </thead>
         <tbody>
@@ -101,6 +94,7 @@
 */
 import Wdatepicker from './js/Wdatepicker'
 import './font/iconfont.css'
+import locale from '../../../src/mixins/locale'
 let { validator } = Wdatepicker
 
 export default {
@@ -112,9 +106,11 @@ export default {
       currentDate: '',
       pickerDate: '',
       isShowPicker: !1,
-      dateReg: /[0-9]{4}(.{1}[0-9]{1,2}){2}/
+      dateReg: /[0-9]{4}(.{1}[0-9]{1,2}){2}/,
+      WEEKS: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
     }
   },
+  mixins: [locale],
   props: {
     // 默认值
     defaultValue: {
@@ -242,14 +238,15 @@ export default {
       if(!this.dateReg.test(v)) return !v && (this.currentDate = '')
       this.example('change', this.selectDate(this.datepicker.judgeType(v)))
     },
-    // input 获取焦点
+    // input get focus
     focus () {
       this.$refs.ipt.focus()
     },
     // 点击不是当月日期，切换到该月或选择该月日期或不做任何操作，最大和最小之外的时间禁止操作
     disabledHandle (time) {
       let {year, month, date, disabledDate, thisMonth} = time
-      if ((this.clickDisabledDate === 'switch' || this.clickDisabledDate === '') && !disabledDate) this.pickerDate = this.datepicker.formatDate(new Date(`${year}/${month}/${date}`), 'YYYY年MM月')
+      if ((this.clickDisabledDate === 'switch' || this.clickDisabledDate === '') && !disabledDate)
+      this.setHeadDate(new Date(`${year}/${month}/${date}`))
       switch (this.clickDisabledDate) {
         case 'switch':
           !disabledDate && this.datepicker.init(new Date(`${year}/${month}/${date}`))
@@ -285,9 +282,31 @@ export default {
     },
     // 显示控件
     showDatetimePicker () {
-      this.pickerDate = this.datepicker.formatDate(this.datepicker.judgeType(this.currentDate), 'YYYY年MM月')
+      this.setHeadDate(this.datepicker.judgeType(this.currentDate))
       this.datepicker.init(this.currentDate, !0)
       this.switchingPickerStatus(!0)
+      this.$nextTick(this.visualAreaDisplay)
+    },
+    // 可视区内显示选择器
+    visualAreaDisplay () {
+      let clientH = window.innerHeight
+      let scrollTop = document.body.scrollTop || document.documentElement.scrollTop 
+      let datepickerWrap = this.$refs['datepicker-wrap']
+      let datepickerPopup = this.$refs.datepicker
+      let datepickerWrapT = datepickerWrap.offsetTop - scrollTop
+      let iptH = this.$refs.ipt.scrollHeight
+      let datepickerPopupH = datepickerPopup.scrollHeight
+      let h = datepickerWrapT + iptH + datepickerPopupH
+      
+      if (h > clientH) {
+        h = h + scrollTop - clientH + 8
+      } else if (datepickerWrapT < 0) {
+        h = datepickerWrapT + scrollTop - 8
+      } else {
+        return null
+      }
+
+      document.documentElement.scrollTop = document.body.scrollTop = h
     },
     // 选择日期
     selectDate (v) {
@@ -300,6 +319,13 @@ export default {
       let date = this.pickerDate.match(/\d+/g),
       year = parseInt(date[0]),
       month = parseInt(date[1]) - 1
+      // lang english
+      if (/[a-z]+$/i.test(this.pickerDate)) {
+        date = new Date(this.pickerDate)
+        year = date.getFullYear()
+        month = date.getMonth()
+      }
+      
       switch (t) {
         case 'yearPrev':
           year -= 1
@@ -315,11 +341,16 @@ export default {
           break;
       }
 
-      this.pickerDate = this.datepicker.formatDate(new Date(year, month), 'YYYY年MM月')
+      this.setHeadDate(new Date(year, month))
       this.datepicker.init(new Date(year, month))
     },
     getSwitchoverDate (date) {
       return date.match(/\d+/g)
+    },
+    setHeadDate (date) {
+      let y = date.getFullYear()
+      let m = date.getMonth() + 1
+      this.pickerDate = `${y + this.t('datepicker.year')} ${this.t('datepicker.month' + m)}`
     }
   },
   watch: {
@@ -338,13 +369,12 @@ export default {
       disabledDate
     })
     this.currentMonthAllDate = this.datepicker.currentMonthAllDate
-    this.pickerDate = this.datepicker.formatDate(this.datepicker.judgeType(this.currentDate), 'YYYY年MM月')
     this.currentDate && this.example('change', this.currentDate)
   },
   mounted () {
     document.addEventListener('click', this.switchingPickerStatus)
   },
-  destroyed () {
+  beforedestroyed () {
     document.removeEventListener('click', this.switchingPickerStatus)
   }
 }
@@ -489,8 +519,12 @@ export default {
       tbody {
         td {
           cursor: pointer;
+          text-align: center;
           &:hover {
             color: $date_hover_color;
+            .circle, .square {
+              background: $date_hover_bg;
+            }
           }
           div > section {
             &.square {
@@ -498,9 +532,6 @@ export default {
             }
             &.circle {
               border-radius: 50%;
-            }
-            &.circle:hover, &.square:hover {
-              background: $date_hover_bg;
             }
             &.current-on, &.on {
               font-weight: bold;
@@ -529,7 +560,7 @@ export default {
             background: $disabeld_bg;
             color: $disabled_font;
             cursor: not-allowed;
-            > div > section, > div > section:hover {
+            > div > section, > div > section:hover, > div > section.circle, > div > section.square {
               background: transparent;
             }
             > div > section.on {

@@ -9,9 +9,9 @@
     </template>
     
     <template v-slot:footer="{self}">
-      <div @click="a(self, 'q')">前十天</div>
-      <div @click="a(self)">今天</div>
-      <div @click="a(self, 'x')">后十天</div>
+      <div @click="switchingDate(self, 'front')">前十天</div>
+      <div @click="switchingDate(self, 'now')">今天</div>
+      <div @click="switchingDate(self, 'after')">后十天</div>
     </template> -->
   </w-datepicker>
 </section>
@@ -19,8 +19,15 @@
 
 <script>
 import Vue from 'vue'
-import Wdatepicker from '../packages/Wdatepicker'
-Vue.use(Wdatepicker)
+import Wdatepicker from '../src'
+import locale from '../dist/lib/locale'
+import cn from '../dist/lib/locale/lang/ko'
+// locale.use(cn)
+Vue.use(Wdatepicker, {
+  locale: cn
+})
+// console.log(locale.t(), Vue.locale)
+
 export default {
   name: 'app',
   data () {
@@ -31,17 +38,18 @@ export default {
     }
   },
   methods: {
-    a (self, t) {
+    switchingDate (self, type) {
       let now = new Date()
-      if (t == 'q') {
-        now.setDate(now.getDate() - 10)
-        self.selectDate(now)
-      } else if (t == 'x') {
-        now.setDate(now.getDate() + 10)
-        self.selectDate(now)
-      } else {
-        self.selectDate(now)
+      switch (type) {
+        case 'front':
+          now.setDate(now.getDate() - 10)
+          break
+        case 'after':
+          now.setDate(now.getDate() + 10)
+          break
       }
+
+      self.selectDate(now)
     },
     focus (vcomponent) {
       // console.log(vcomponent)
@@ -50,7 +58,7 @@ export default {
       // console.log(vcomponent)
     },
     change (value) {
-      console.log(value)
+      // console.log(value)
     },
     disabledDateFn (selectDate, monthDate, nowDate) {
       let date = new Date('2019-09-10')
@@ -59,6 +67,9 @@ export default {
     disabledDate (time) {
       // console.log(time)
     }
+  },
+  created () {
+    // console.log(locale.t('datepicker.weeks'), Vue.locale)
   }
 }
 </script>

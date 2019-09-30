@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("vue"));
 	else if(typeof define === 'function' && define.amd)
 		define("Wdatepicker", [], factory);
 	else if(typeof exports === 'object')
-		exports["Wdatepicker"] = factory();
+		exports["Wdatepicker"] = factory(require("vue"));
 	else
-		root["Wdatepicker"] = factory();
-})((typeof self !== 'undefined' ? self : this), function() {
+		root["Wdatepicker"] = factory(root["Vue"]);
+})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__8bbf__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -346,6 +346,83 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
+
+
+/***/ }),
+
+/***/ "01f9":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var LIBRARY = __webpack_require__("2d00");
+var $export = __webpack_require__("5ca1");
+var redefine = __webpack_require__("2aba");
+var hide = __webpack_require__("32e9");
+var Iterators = __webpack_require__("84f2");
+var $iterCreate = __webpack_require__("41a0");
+var setToStringTag = __webpack_require__("7f20");
+var getPrototypeOf = __webpack_require__("38fd");
+var ITERATOR = __webpack_require__("2b4c")('iterator');
+var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
+var FF_ITERATOR = '@@iterator';
+var KEYS = 'keys';
+var VALUES = 'values';
+
+var returnThis = function () { return this; };
+
+module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+  $iterCreate(Constructor, NAME, next);
+  var getMethod = function (kind) {
+    if (!BUGGY && kind in proto) return proto[kind];
+    switch (kind) {
+      case KEYS: return function keys() { return new Constructor(this, kind); };
+      case VALUES: return function values() { return new Constructor(this, kind); };
+    } return function entries() { return new Constructor(this, kind); };
+  };
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = $native || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
+  // Fix native
+  if ($anyNative) {
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+      // Set @@toStringTag to native iterators
+      setToStringTag(IteratorPrototype, TAG, true);
+      // fix for some old engines
+      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
+    }
+  }
+  // fix Array#{values, @@iterator}.name in V8 / FF
+  if (DEF_VALUES && $native && $native.name !== VALUES) {
+    VALUES_BUG = true;
+    $default = function values() { return $native.call(this); };
+  }
+  // Define iterator
+  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+    hide(proto, ITERATOR, $default);
+  }
+  // Plug for library
+  Iterators[NAME] = $default;
+  Iterators[TAG] = returnThis;
+  if (DEFAULT) {
+    methods = {
+      values: DEF_VALUES ? $default : getMethod(VALUES),
+      keys: IS_SET ? $default : getMethod(KEYS),
+      entries: $entries
+    };
+    if (FORCED) for (key in methods) {
+      if (!(key in proto)) redefine(proto, key, methods[key]);
+    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+  }
+  return methods;
+};
 
 
 /***/ }),
@@ -1217,6 +1294,26 @@ if (__webpack_require__("9e1e") && /./g.flags != 'g') __webpack_require__("86cc"
 
 /***/ }),
 
+/***/ "38fd":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+var has = __webpack_require__("69a8");
+var toObject = __webpack_require__("4bf8");
+var IE_PROTO = __webpack_require__("613b")('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+module.exports = Object.getPrototypeOf || function (O) {
+  O = toObject(O);
+  if (has(O, IE_PROTO)) return O[IE_PROTO];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
+};
+
+
+/***/ }),
+
 /***/ "3a38":
 /***/ (function(module, exports) {
 
@@ -1280,6 +1377,132 @@ __webpack_require__("7a56")('RegExp');
 
 /***/ }),
 
+/***/ "3c4e":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isMergeableObject = function isMergeableObject(value) {
+	return isNonNullObject(value)
+		&& !isSpecial(value)
+};
+
+function isNonNullObject(value) {
+	return !!value && typeof value === 'object'
+}
+
+function isSpecial(value) {
+	var stringValue = Object.prototype.toString.call(value);
+
+	return stringValue === '[object RegExp]'
+		|| stringValue === '[object Date]'
+		|| isReactElement(value)
+}
+
+// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
+var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
+
+function isReactElement(value) {
+	return value.$$typeof === REACT_ELEMENT_TYPE
+}
+
+function emptyTarget(val) {
+    return Array.isArray(val) ? [] : {}
+}
+
+function cloneIfNecessary(value, optionsArgument) {
+    var clone = optionsArgument && optionsArgument.clone === true;
+    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
+}
+
+function defaultArrayMerge(target, source, optionsArgument) {
+    var destination = target.slice();
+    source.forEach(function(e, i) {
+        if (typeof destination[i] === 'undefined') {
+            destination[i] = cloneIfNecessary(e, optionsArgument);
+        } else if (isMergeableObject(e)) {
+            destination[i] = deepmerge(target[i], e, optionsArgument);
+        } else if (target.indexOf(e) === -1) {
+            destination.push(cloneIfNecessary(e, optionsArgument));
+        }
+    });
+    return destination
+}
+
+function mergeObject(target, source, optionsArgument) {
+    var destination = {};
+    if (isMergeableObject(target)) {
+        Object.keys(target).forEach(function(key) {
+            destination[key] = cloneIfNecessary(target[key], optionsArgument);
+        });
+    }
+    Object.keys(source).forEach(function(key) {
+        if (!isMergeableObject(source[key]) || !target[key]) {
+            destination[key] = cloneIfNecessary(source[key], optionsArgument);
+        } else {
+            destination[key] = deepmerge(target[key], source[key], optionsArgument);
+        }
+    });
+    return destination
+}
+
+function deepmerge(target, source, optionsArgument) {
+    var sourceIsArray = Array.isArray(source);
+    var targetIsArray = Array.isArray(target);
+    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
+    var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
+
+    if (!sourceAndTargetTypesMatch) {
+        return cloneIfNecessary(source, optionsArgument)
+    } else if (sourceIsArray) {
+        var arrayMerge = options.arrayMerge || defaultArrayMerge;
+        return arrayMerge(target, source, optionsArgument)
+    } else {
+        return mergeObject(target, source, optionsArgument)
+    }
+}
+
+deepmerge.all = function deepmergeAll(array, optionsArgument) {
+    if (!Array.isArray(array) || array.length < 2) {
+        throw new Error('first argument should be an array with at least two elements')
+    }
+
+    // we are sure there are at least 2 values, so it is safe to have no initial value
+    return array.reduce(function(prev, next) {
+        return deepmerge(prev, next, optionsArgument)
+    })
+};
+
+var deepmerge_1 = deepmerge;
+
+module.exports = deepmerge_1;
+
+
+/***/ }),
+
+/***/ "41a0":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var create = __webpack_require__("2aeb");
+var descriptor = __webpack_require__("4630");
+var setToStringTag = __webpack_require__("7f20");
+var IteratorPrototype = {};
+
+// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+__webpack_require__("32e9")(IteratorPrototype, __webpack_require__("2b4c")('iterator'), function () { return this; });
+
+module.exports = function (Constructor, NAME, next) {
+  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+  setToStringTag(Constructor, NAME + ' Iterator');
+};
+
+
+/***/ }),
+
 /***/ "454f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1302,6 +1525,13 @@ module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
+
+/***/ }),
+
+/***/ "458b":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -1438,10 +1668,10 @@ module.exports = function (it) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("77d6");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("458b");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wdatepicker_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -2095,13 +2325,6 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 /***/ }),
 
-/***/ "77d6":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "77f1":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2192,6 +2415,20 @@ module.exports = __webpack_require__("8e60") ? Object.defineProperties : functio
 
 /***/ }),
 
+/***/ "7f20":
+/***/ (function(module, exports, __webpack_require__) {
+
+var def = __webpack_require__("86cc").f;
+var has = __webpack_require__("69a8");
+var TAG = __webpack_require__("2b4c")('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+};
+
+
+/***/ }),
+
 /***/ "7f7f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2228,6 +2465,14 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 /***/ (function(module, exports) {
 
 module.exports = function () { /* empty */ };
+
+
+/***/ }),
+
+/***/ "84f2":
+/***/ (function(module, exports) {
+
+module.exports = {};
 
 
 /***/ }),
@@ -2291,6 +2536,13 @@ module.exports = {
   check: check
 };
 
+
+/***/ }),
+
+/***/ "8bbf":
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__8bbf__;
 
 /***/ }),
 
@@ -2390,6 +2642,20 @@ module.exports = function (fn, that, length) {
   return function (/* ...args */) {
     return fn.apply(that, arguments);
   };
+};
+
+
+/***/ }),
+
+/***/ "9c6c":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 22.1.3.31 Array.prototype[@@unscopables]
+var UNSCOPABLES = __webpack_require__("2b4c")('unscopables');
+var ArrayProto = Array.prototype;
+if (ArrayProto[UNSCOPABLES] == undefined) __webpack_require__("32e9")(ArrayProto, UNSCOPABLES, {});
+module.exports = function (key) {
+  ArrayProto[UNSCOPABLES][key] = true;
 };
 
 
@@ -2641,6 +2907,71 @@ module.exports = function (it) {
   var isRegExp;
   return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : cof(it) == 'RegExp');
 };
+
+
+/***/ }),
+
+/***/ "ac6a":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $iterators = __webpack_require__("cadf");
+var getKeys = __webpack_require__("0d58");
+var redefine = __webpack_require__("2aba");
+var global = __webpack_require__("7726");
+var hide = __webpack_require__("32e9");
+var Iterators = __webpack_require__("84f2");
+var wks = __webpack_require__("2b4c");
+var ITERATOR = wks('iterator');
+var TO_STRING_TAG = wks('toStringTag');
+var ArrayValues = Iterators.Array;
+
+var DOMIterables = {
+  CSSRuleList: true, // TODO: Not spec compliant, should be false.
+  CSSStyleDeclaration: false,
+  CSSValueList: false,
+  ClientRectList: false,
+  DOMRectList: false,
+  DOMStringList: false,
+  DOMTokenList: true,
+  DataTransferItemList: false,
+  FileList: false,
+  HTMLAllCollection: false,
+  HTMLCollection: false,
+  HTMLFormElement: false,
+  HTMLSelectElement: false,
+  MediaList: true, // TODO: Not spec compliant, should be false.
+  MimeTypeArray: false,
+  NamedNodeMap: false,
+  NodeList: true,
+  PaintRequestList: false,
+  Plugin: false,
+  PluginArray: false,
+  SVGLengthList: false,
+  SVGNumberList: false,
+  SVGPathSegList: false,
+  SVGPointList: false,
+  SVGStringList: false,
+  SVGTransformList: false,
+  SourceBufferList: false,
+  StyleSheetList: true, // TODO: Not spec compliant, should be false.
+  TextTrackCueList: false,
+  TextTrackList: false,
+  TouchList: false
+};
+
+for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++) {
+  var NAME = collections[i];
+  var explicit = DOMIterables[NAME];
+  var Collection = global[NAME];
+  var proto = Collection && Collection.prototype;
+  var key;
+  if (proto) {
+    if (!proto[ITERATOR]) hide(proto, ITERATOR, ArrayValues);
+    if (!proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+    Iterators[NAME] = ArrayValues;
+    if (explicit) for (key in $iterators) if (!proto[key]) redefine(proto, key, $iterators[key], true);
+  }
+}
 
 
 /***/ }),
@@ -2925,6 +3256,48 @@ module.exports = function (key) {
 
 /***/ }),
 
+/***/ "cadf":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var addToUnscopables = __webpack_require__("9c6c");
+var step = __webpack_require__("d53b");
+var Iterators = __webpack_require__("84f2");
+var toIObject = __webpack_require__("6821");
+
+// 22.1.3.4 Array.prototype.entries()
+// 22.1.3.13 Array.prototype.keys()
+// 22.1.3.29 Array.prototype.values()
+// 22.1.3.30 Array.prototype[@@iterator]()
+module.exports = __webpack_require__("01f9")(Array, 'Array', function (iterated, kind) {
+  this._t = toIObject(iterated); // target
+  this._i = 0;                   // next index
+  this._k = kind;                // kind
+// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
+}, function () {
+  var O = this._t;
+  var kind = this._k;
+  var index = this._i++;
+  if (!O || index >= O.length) {
+    this._t = undefined;
+    return step(1);
+  }
+  if (kind == 'keys') return step(0, index);
+  if (kind == 'values') return step(0, O[index]);
+  return step(0, [index, O[index]]);
+}, 'values');
+
+// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
+Iterators.Arguments = Iterators.Array;
+
+addToUnscopables('keys');
+addToUnscopables('values');
+addToUnscopables('entries');
+
+
+/***/ }),
+
 /***/ "cb7c":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2974,6 +3347,16 @@ module.exports = function (object, names) {
 
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+
+/***/ }),
+
+/***/ "d53b":
+/***/ (function(module, exports) {
+
+module.exports = function (done, value) {
+  return { value: value, done: !!done };
 };
 
 
@@ -3324,8 +3707,11 @@ if (typeof window !== 'undefined') {
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0e142547-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=76f6a350&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{staticClass:"wj-datepicker"},[_c('input',{ref:"ipt",staticClass:"wj-datepicker-ipt",class:{'ipt-disabled': _vm.disabled},attrs:{"type":"text","placeholder":_vm.placeholder,"readonly":!_vm.editable,"disabled":_vm.disabled},domProps:{"value":_vm.nowDate},on:{"click":function($event){$event.stopPropagation();return _vm.showDatetimePicker($event)},"focus":function($event){return _vm.example('focus')},"blur":function($event){return _vm.example('blur')},"change":_vm.change,"input":function($event){return _vm.example('input', $event.target.value)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.switchingPickerStatus($event, 'keyup')}}}),(!_vm.disabled && _vm.clearBtn)?_c('section',{staticClass:"wj-close",on:{"click":function($event){_vm.currentDate = ''}}},[_vm._t("close-icon",[_c('i',{class:_vm.closeIconClass || 'iconfont icon-guanbi'})])],2):_vm._e(),_c('section',{staticClass:"wj-date-icon"},[_vm._t("date-icon",[_c('i',{class:_vm.dateIconClass || 'iconfont icon-riqi'})])],2),_c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShowPicker),expression:"isShowPicker"}],staticClass:"wj-datepicker-content",class:{'on': _vm.isShowPicker},on:{"click":function($event){$event.stopPropagation();}}},[_c('header',{staticClass:"wj-datepicker-header"},[_vm._t("header",null,{"self":_vm._self}),_c('section',{staticClass:"wj-datepicker-header-tools"},[_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangzuo_o",attrs:{"title":"上一年"},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearPrev')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o",attrs:{"title":"上一月"},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthPrev')}}}),_c('section',{staticClass:"wj-datepicker-select-date"},[_vm._v(_vm._s(_vm.pickerDate))]),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangyou_o",attrs:{"title":"下一月"},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthNext')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangyou_o",attrs:{"title":"下一年"},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearNext')}}})])],2),_c('table',{staticClass:"wj-datepicker-body",attrs:{"border":"0","cellspacing":"0"}},[_c('thead',[_c('tr',[_c('td',[_vm._v("一")]),_c('td',[_vm._v("二")]),_c('td',[_vm._v("三")]),_c('td',[_vm._v("四")]),_c('td',[_vm._v("五")]),_c('td',[_vm._v("六")]),_c('td',[_vm._v("日")])])]),_c('tbody',_vm._l((_vm.currentMonthAllDate),function(item){return _c('tr',{key:item.index},_vm._l((item),function(v){return _c('td',{key:v.index,class:{
+// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
+var web_dom_iterable = __webpack_require__("ac6a");
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2cd4b5b6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=58d5b664&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{ref:"datepicker-wrap",staticClass:"wj-datepicker"},[_c('input',{ref:"ipt",staticClass:"wj-datepicker-ipt",class:{'ipt-disabled': _vm.disabled},attrs:{"type":"text","placeholder":_vm.placeholder,"readonly":!_vm.editable,"disabled":_vm.disabled},domProps:{"value":_vm.nowDate},on:{"click":function($event){$event.stopPropagation();return _vm.showDatetimePicker($event)},"focus":function($event){return _vm.example('focus')},"blur":function($event){return _vm.example('blur')},"change":_vm.change,"input":function($event){return _vm.example('input', $event.target.value)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.switchingPickerStatus($event, 'keyup')}}}),(!_vm.disabled && _vm.clearBtn)?_c('section',{staticClass:"wj-close",on:{"click":function($event){_vm.currentDate = ''}}},[_vm._t("close-icon",[_c('i',{class:_vm.closeIconClass || 'iconfont icon-guanbi'})])],2):_vm._e(),_c('section',{staticClass:"wj-date-icon"},[_vm._t("date-icon",[_c('i',{class:_vm.dateIconClass || 'iconfont icon-riqi'})])],2),_c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShowPicker),expression:"isShowPicker"}],ref:"datepicker",staticClass:"wj-datepicker-content",class:{'on': _vm.isShowPicker},on:{"click":function($event){$event.stopPropagation();}}},[_c('header',{staticClass:"wj-datepicker-header"},[_vm._t("header",null,{"self":_vm._self}),_c('section',{staticClass:"wj-datepicker-header-tools"},[_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangzuo_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('yearPrev')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('monthPrev')}}}),_c('section',{staticClass:"wj-datepicker-select-date"},[_vm._v(_vm._s(_vm.pickerDate))]),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangyou_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('monthNext')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangyou_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('yearNext')}}})])],2),_c('table',{staticClass:"wj-datepicker-body",attrs:{"border":"0","cellspacing":"0"}},[_c('thead',[_c('tr',_vm._l((_vm.WEEKS),function(item,i){return _c('td',{key:i},[_vm._v(_vm._s(_vm.t('datepicker.weeks.'+item)))])}),0)]),_c('tbody',_vm._l((_vm.currentMonthAllDate),function(item){return _c('tr',{key:item.index},_vm._l((item),function(v){return _c('td',{key:v.index,class:{
                 'otherTime': v.otherTime,
                 'disabled': v.disabledDate
               },attrs:{"title":((v.year) + "-" + (v.month) + "-" + (v.date))},on:{"click":function($event){!v.otherTime && _vm.example('change', _vm.selectDate(v)) || _vm.disabledHandle(v)}}},[_c('div',[_c('section',{class:{
@@ -3337,7 +3723,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=76f6a350&
+// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=58d5b664&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.match.js
 var es6_regexp_match = __webpack_require__("4917");
@@ -3753,18 +4139,138 @@ Wdatepicker_Wdatepicker.validator = function (v) {
 // EXTERNAL MODULE: ./packages/Wdatepicker/src/font/iconfont.css
 var iconfont = __webpack_require__("0c6b");
 
+// EXTERNAL MODULE: external {"commonjs":"vue","commonjs2":"vue","root":"Vue"}
+var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
+var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
+
+// EXTERNAL MODULE: ./node_modules/deepmerge/dist/cjs.js
+var cjs = __webpack_require__("3c4e");
+var cjs_default = /*#__PURE__*/__webpack_require__.n(cjs);
+
+// CONCATENATED MODULE: ./src/locale/lang/zh_CN.js
+var zh_CN = {
+  datepicker: {
+    now: '此刻',
+    today: '今天',
+    cancel: '取消',
+    clear: '清空',
+    confirm: '确定',
+    selectDate: '选择日期',
+    selectTime: '选择时间',
+    startDate: '开始日期',
+    startTime: '开始时间',
+    endDate: '结束日期',
+    endTime: '结束时间',
+    prevYear: '前一年',
+    nextYear: '后一年',
+    prevMonth: '上个月',
+    nextMonth: '下个月',
+    year: '年',
+    month1: '1 月',
+    month2: '2 月',
+    month3: '3 月',
+    month4: '4 月',
+    month5: '5 月',
+    month6: '6 月',
+    month7: '7 月',
+    month8: '8 月',
+    month9: '9 月',
+    month10: '10 月',
+    month11: '11 月',
+    month12: '12 月',
+    // week: '周次',
+    weeks: {
+      sun: '日',
+      mon: '一',
+      tue: '二',
+      wed: '三',
+      thu: '四',
+      fri: '五',
+      sat: '六'
+    },
+    months: {
+      jan: '一月',
+      feb: '二月',
+      mar: '三月',
+      apr: '四月',
+      may: '五月',
+      jun: '六月',
+      jul: '七月',
+      aug: '八月',
+      sep: '九月',
+      oct: '十月',
+      nov: '十一月',
+      dec: '十二月'
+    }
+  }
+};
+/* harmony default export */ var lang_zh_CN = (zh_CN);
+// CONCATENATED MODULE: ./src/locale/index.js
+
+
+
+
+var lang = lang_zh_CN;
+var isOn = false;
+
+var locale_i18n_$t = function i18n_$t() {
+  var $t = Object.getPrototypeOf(this || external_commonjs_vue_commonjs2_vue_root_Vue_default.a).$t;
+
+  if (typeof $t === 'function' && !!external_commonjs_vue_commonjs2_vue_root_Vue_default.a.locale) {
+    if (!isOn) {
+      isOn = true;
+      external_commonjs_vue_commonjs2_vue_root_Vue_default.a.locale(external_commonjs_vue_commonjs2_vue_root_Vue_default.a.config.lang, cjs_default()(lang, external_commonjs_vue_commonjs2_vue_root_Vue_default.a.locale(external_commonjs_vue_commonjs2_vue_root_Vue_default.a.config.lang) || {}, {
+        clone: true
+      }));
+    }
+
+    return $t.apply(this, arguments);
+  }
+};
+
+var locale_t = function t() {
+  var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var value = locale_i18n_$t.apply(this, arguments);
+  if (value !== null && value !== undefined) return value;
+  var attributes = path.split('.');
+
+  var get = function get(arr, obj) {
+    if (!arr.length) return obj;
+    var narr = arr.slice(1);
+    return get(narr, obj[arr[0]]);
+  };
+
+  return get(attributes, lang);
+};
+var use = function use(nlang) {
+  lang = nlang || lang;
+};
+var i18n = function i18n(fn) {
+  locale_i18n_$t = fn || locale_i18n_$t;
+};
+/* harmony default export */ var locale = ({
+  use: use,
+  t: locale_t,
+  i18n: i18n
+});
+// CONCATENATED MODULE: ./src/mixins/locale.js
+
+/* harmony default export */ var mixins_locale = ({
+  methods: {
+    t: function t() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return locale_t.apply(this, args);
+    }
+  }
+});
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=script&lang=js&
 
 
 
 
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3861,6 +4367,7 @@ var iconfont = __webpack_require__("0c6b");
 */
 
 
+
 var _validator = js_Wdatepicker.validator;
 /* harmony default export */ var Wdatepickervue_type_script_lang_js_ = ({
   name: 'WDatepicker',
@@ -3871,9 +4378,11 @@ var _validator = js_Wdatepicker.validator;
       currentDate: '',
       pickerDate: '',
       isShowPicker: !1,
-      dateReg: /[0-9]{4}(.{1}[0-9]{1,2}){2}/
+      dateReg: /[0-9]{4}(.{1}[0-9]{1,2}){2}/,
+      WEEKS: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
     };
   },
+  mixins: [mixins_locale],
   props: {
     // 默认值
     defaultValue: {
@@ -4002,7 +4511,7 @@ var _validator = js_Wdatepicker.validator;
       if (!this.dateReg.test(v)) return !v && (this.currentDate = '');
       this.example('change', this.selectDate(this.datepicker.judgeType(v)));
     },
-    // input 获取焦点
+    // input get focus
     focus: function focus() {
       this.$refs.ipt.focus();
     },
@@ -4013,7 +4522,7 @@ var _validator = js_Wdatepicker.validator;
           date = time.date,
           disabledDate = time.disabledDate,
           thisMonth = time.thisMonth;
-      if ((this.clickDisabledDate === 'switch' || this.clickDisabledDate === '') && !disabledDate) this.pickerDate = this.datepicker.formatDate(new Date("".concat(year, "/").concat(month, "/").concat(date)), 'YYYY年MM月');
+      if ((this.clickDisabledDate === 'switch' || this.clickDisabledDate === '') && !disabledDate) this.setHeadDate(new Date("".concat(year, "/").concat(month, "/").concat(date)));
 
       switch (this.clickDisabledDate) {
         case 'switch':
@@ -4059,9 +4568,31 @@ var _validator = js_Wdatepicker.validator;
     },
     // 显示控件
     showDatetimePicker: function showDatetimePicker() {
-      this.pickerDate = this.datepicker.formatDate(this.datepicker.judgeType(this.currentDate), 'YYYY年MM月');
+      this.setHeadDate(this.datepicker.judgeType(this.currentDate));
       this.datepicker.init(this.currentDate, !0);
       this.switchingPickerStatus(!0);
+      this.$nextTick(this.visualAreaDisplay);
+    },
+    // 可视区内显示选择器
+    visualAreaDisplay: function visualAreaDisplay() {
+      var clientH = window.innerHeight;
+      var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+      var datepickerWrap = this.$refs['datepicker-wrap'];
+      var datepickerPopup = this.$refs.datepicker;
+      var datepickerWrapT = datepickerWrap.offsetTop - scrollTop;
+      var iptH = this.$refs.ipt.scrollHeight;
+      var datepickerPopupH = datepickerPopup.scrollHeight;
+      var h = datepickerWrapT + iptH + datepickerPopupH;
+
+      if (h > clientH) {
+        h = h + scrollTop - clientH + 8;
+      } else if (datepickerWrapT < 0) {
+        h = datepickerWrapT + scrollTop - 8;
+      } else {
+        return null;
+      }
+
+      document.documentElement.scrollTop = document.body.scrollTop = h;
     },
     // 选择日期
     selectDate: function selectDate(v) {
@@ -4073,7 +4604,13 @@ var _validator = js_Wdatepicker.validator;
     switchoverYearAndMonth: function switchoverYearAndMonth(t) {
       var date = this.pickerDate.match(/\d+/g),
           year = parseInt(date[0]),
-          month = parseInt(date[1]) - 1;
+          month = parseInt(date[1]) - 1; // lang english
+
+      if (/[a-z]+$/i.test(this.pickerDate)) {
+        date = new Date(this.pickerDate);
+        year = date.getFullYear();
+        month = date.getMonth();
+      }
 
       switch (t) {
         case 'yearPrev':
@@ -4093,11 +4630,16 @@ var _validator = js_Wdatepicker.validator;
           break;
       }
 
-      this.pickerDate = this.datepicker.formatDate(new Date(year, month), 'YYYY年MM月');
+      this.setHeadDate(new Date(year, month));
       this.datepicker.init(new Date(year, month));
     },
     getSwitchoverDate: function getSwitchoverDate(date) {
       return date.match(/\d+/g);
+    },
+    setHeadDate: function setHeadDate(date) {
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      this.pickerDate = "".concat(y + this.t('datepicker.year'), " ").concat(this.t('datepicker.month' + m));
     }
   },
   watch: {
@@ -4126,13 +4668,12 @@ var _validator = js_Wdatepicker.validator;
       disabledDate: disabledDate
     });
     this.currentMonthAllDate = this.datepicker.currentMonthAllDate;
-    this.pickerDate = this.datepicker.formatDate(this.datepicker.judgeType(this.currentDate), 'YYYY年MM月');
     this.currentDate && this.example('change', this.currentDate);
   },
   mounted: function mounted() {
     document.addEventListener('click', this.switchingPickerStatus);
   },
-  destroyed: function destroyed() {
+  beforedestroyed: function beforedestroyed() {
     document.removeEventListener('click', this.switchingPickerStatus);
   }
 });
@@ -4266,31 +4807,48 @@ src_Wdatepicker.install = function (Vue) {
 };
 
 /* harmony default export */ var packages_Wdatepicker = (src_Wdatepicker);
-// CONCATENATED MODULE: ./packages/index.js
+// CONCATENATED MODULE: ./src/index.js
+
+
+
+/* Automatically generated by './build/build-entry.js' */
 
 
 var components = [packages_Wdatepicker];
 
-var install = function install(Vue) {
-  if (install.installed) return;
-  components.map(function (component) {
-    return Vue.component(component.name, component);
+var src_install = function install(Vue) {
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  locale.use(opts.locale);
+  locale.i18n(opts.i18n);
+  components.forEach(function (component) {
+    Vue.component(component.name, component);
   });
-}; // 判断是否是直接引入文件
-
+};
 
 if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
+  src_install(window.Vue);
 }
 
-/* harmony default export */ var packages_0 = ({
-  install: install,
+var version = '1.0.2',
+    src_locale = locale.use,
+    src_i18n = locale.i18n;
+
+/* harmony default export */ var src = ({
+  version: '1.0.2',
+  locale: locale.use,
+  i18n: locale.i18n,
+  install: src_install,
   Wdatepicker: packages_Wdatepicker
 });
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
+/* concated harmony reexport version */__webpack_require__.d(__webpack_exports__, "version", function() { return version; });
+/* concated harmony reexport locale */__webpack_require__.d(__webpack_exports__, "locale", function() { return src_locale; });
+/* concated harmony reexport i18n */__webpack_require__.d(__webpack_exports__, "i18n", function() { return src_i18n; });
+/* concated harmony reexport install */__webpack_require__.d(__webpack_exports__, "install", function() { return src_install; });
+/* concated harmony reexport Wdatepicker */__webpack_require__.d(__webpack_exports__, "Wdatepicker", function() { return packages_Wdatepicker; });
 
 
-/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (packages_0);
+/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (src);
 
 
 

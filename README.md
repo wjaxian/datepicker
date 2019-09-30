@@ -3,11 +3,11 @@
 <!-- [![Build Status](https://travis-ci.org/wujiabk/datepicker.svg?branch=master)](https://travis-ci.org/wujiabk/datepicker) -->
 [![npm](https://img.shields.io/npm/v/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
 [![npm bundle size](https://img.shields.io/bundlephobia/min/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
-[![npm](https://img.shields.io/npm/dw/@wujiabk/datepicker)](https://www.npmjs.com/package/@wujia/datepicker)
+[![npm](https://img.shields.io/npm/dm/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujia/datepicker)
 [![GitHub issues](https://img.shields.io/github/issues/wujiabk/datepicker)](https://github.com/wujiabk/datepicker/issues)
 [![npm](https://img.shields.io/npm/l/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
 
-A C-End Date Selector Component Based on Vue Development
+A C-End Date Selector Component Based on Vue Development.
 
 - [Demo](#demo)
 - [Install](#install)
@@ -17,13 +17,14 @@ A C-End Date Selector Component Based on Vue Development
 - [Events](#events)
 - [Slots](#Slots)
 - [Disabled dates](#disabled-dates)
+- [Internationalization](#Internationalization)
 
 ## Demo
 
 To view a demo online:
 https://codesandbox.io/embed/staging-darkness-k7ymp
 
-To view demo examples locally clone the repo and run `npm install && npm run serve`
+To view demo examples locally clone the repo and run `npm install && npm run dev`
 
 ## Install
 
@@ -52,10 +53,7 @@ Or use directly from a CDN
 <script src="https://unpkg.com/@wujiaxian/datepicker"></script>
 <script>
   const app = new Vue({
-    el: '#app',
-    components: {
-      Wdatepicker
-    }
+    el: '#app'
   })
 </script>
 ```
@@ -128,6 +126,7 @@ export default {
 <w-datepicker v-model="date" @changge="change" @focus="focus" @blur="blur" @disabledDate="disabledDate"></w-datepicker>
 ```
 
+
 ## Date Formatting
 
 String Formatting
@@ -188,6 +187,50 @@ new Date('2019/09/30')
 | date-icon                     |                           | Custom Date Icon                         |
 | close-icon                    |                           | Custom Close Icon                        |
 
+
+#### Use of slots
+``` html
+<script>
+export default {
+  data () {
+    return {
+      date: ''
+    }
+  },
+  methods: {
+    headClickHandler (componentInstance) {
+
+    },
+    switchingDate (componentInstance, type) {
+      let now = new Date()
+      switch (type) {
+        case 'front':
+          now.setDate(now.getDate() - 10)
+          break
+        case 'after':
+          now.setDate(now.getDate() + 10)
+          break
+      }
+
+      componentInstance.selectDate(now)
+    }
+  }
+}
+</script>
+
+<w-datepicker v-model="date">
+  <template v-slot:header="{self}">
+    <div @click="headClickHandler(self)">This is a head content.</div>
+  </template>
+
+  <template v-slot:footer="{self}">
+    <button @click="switchingDate(self, 'front')">The first 10 days</button>
+    <button @click="switchingDate(self, 'now')">Today<button>
+    <button @click="switchingDate(self, 'after')">The next 10 days</button>
+  </template>
+</w-datepicker>
+```
+
 ## Disabled Dates
 
 Dates can be disabled in a number of ways.
@@ -227,6 +270,156 @@ export default {
 
 <w-datepicker :disabledDate="disableDate"></w-datepicker>
 ```
+
+
+## Internationalization
+
+The default use of Chinese in components is required. If you want to use other languages, you need to have multiple language settings. Take English as an example, in main.js:
+
+``` html
+<script>
+  // Complete introduction
+  import Vue from 'vue'
+  import Wdatepicker from '@wujiaxian/datepicker'
+  import "@wujiaxian/datepicker/dist/Wdatepicker.css"
+  import en from '@wujiaxian/datepicker/dist/lib/locale/lang/en'
+
+  Vue.use(Wdatepicker, { 
+    locale: en 
+  })
+
+  // or
+
+  Vue.use(Wdatepicker)
+  Wdatepicker.locale(en)
+
+  // or
+
+  import locale from '@wujiaxian/datepicker/dist/lib/locale/index'
+
+  locale.use(en)
+  Vue.use(Wdatepicker)
+</script>
+``` 
+
+#### compatible vue-i18n@6.x
+
+Vue-i18n of 6.x is not supported by default. You need to process it manually.
+
+``` html
+<script>
+  import Vue from 'vue'
+  import Wdatepicker from '@wujiaxian/datepicker'
+  import "@wujiaxian/datepicker/dist/Wdatepicker.css"
+  import en from '@wujiaxian/datepicker/dist/lib/locale/lang/en'
+
+  Vue.use(VueI18n)
+
+  const i18n = new VueI18n({
+    locale: 'en',
+    message: {
+      en: {
+        ...en
+      },
+      cn: {
+        //...cn
+      }
+    }
+  })
+
+  Vue.use(Wdatepicker, {
+    i18n: (key, value) => i18n.t(key, value)
+  })
+
+  new Vue({ i18n }).$mount('#app')
+</script>
+``` 
+
+or
+
+``` html
+<script>
+  import Vue from 'vue'
+  import Wdatepicker from '@wujiaxian/datepicker'
+  import "@wujiaxian/datepicker/dist/Wdatepicker.css"
+  import en from '@wujiaxian/datepicker/dist/lib/locale/lang/en'
+  import locale from '@wujiaxian/datepicker/dist/lib/locale/index'
+
+  Vue.use(VueI18n)
+  Vue.use(Wdatepicker)
+
+  const i18n = new VueI18n({
+    locale: 'en',
+    message: {
+      en: {
+        ...en
+      },
+      cn: {
+        //...cn
+      }
+    }
+  })
+
+  locale.i18n((key, value) => i18n.t(key, value))
+</script>
+``` 
+
+#### Loading Language Files by CDN
+
+```html
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/en.js"></script>
+
+  <script>
+    Vue.use(Wdatepicker)
+    Wdatepicker.locale(W.lang.en)
+
+    // or
+
+    Vue.use(Wdatepicker, {
+      locale: W.lang.en
+    })
+  </script>
+```
+
+Matching vue-i18n usage
+
+```html
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/en.js"></script>
+
+  <script>
+    Vue.use(VueI18n)
+    Vue.use(Wdatepicker)
+
+    const messages = {
+      ko: {
+        ...W.lang.ko
+      }
+    }
+
+    const i18n = new VueI18n({
+      locale: 'ko',
+      messages,
+    })
+    
+    Wdatepicker.i18n((key, value) => i18n.t(key, value))
+  </script>
+```
+
+#### At present, the following languages are built-in:
+
+  - 简体中文（zh_CN）
+  - 繁体中文（zh_TW）
+  - English（en）
+  - Japanese（ja）
+  - Korean（ko）
+
+#### If you need to add a language, please submit it it to me in the following file format.
+[Languges](https://unpkg.com/@wujiaxian/datepicker/dist/lib/locale/lang/)
 
 # License
 [MIT](https://opensource.org/licenses/MIT)
