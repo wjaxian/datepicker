@@ -7,6 +7,7 @@
     var mod = {
       exports: {}
     };
+    global = global || window;
     global.W = global.W || {};
     global.W.locale = global.W.locale || {};
 
@@ -16,7 +17,9 @@
 })(this, function (exports, _vue, _deepmerge, _zh_CN) {
   'use strict';
 
-  exports.__esModule = true;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
   exports.i18n = exports.use = exports.t = undefined;
 
   var _vue2 = _interopRequireDefault(_vue);
@@ -69,8 +72,8 @@
   };
 
   exports.default = {
-    use,
-    t,
-    i18n
+    use: use,
+    t: t,
+    i18n: i18n
   };
 });

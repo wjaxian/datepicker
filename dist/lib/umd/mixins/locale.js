@@ -7,6 +7,7 @@
     var mod = {
       exports: {}
     };
+    global = global || window;
     global.W = global.W || {};
     global.W.mixins = global.W.mixins || {};
 
@@ -16,7 +17,9 @@
 })(this, function (exports, _locale) {
   'use strict';
 
-  exports.__esModule = true;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
   exports.default = {
     methods: {
       t: function (...args) {
@@ -24,5 +27,4 @@
       }
     }
   };
-  module.exports = exports.default;
 });

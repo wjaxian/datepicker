@@ -1,4 +1,4 @@
-export var zh_CN = {
+export default {
   datepicker: {
     now: '此刻',
     today: '今天',
@@ -54,5 +54,3 @@ export var zh_CN = {
     }
   }
 }
-
-export default zh_CN

@@ -3710,8 +3710,8 @@ var es6_function_name = __webpack_require__("7f7f");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2cd4b5b6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=58d5b664&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{ref:"datepicker-wrap",staticClass:"wj-datepicker"},[_c('input',{ref:"ipt",staticClass:"wj-datepicker-ipt",class:{'ipt-disabled': _vm.disabled},attrs:{"type":"text","placeholder":_vm.placeholder,"readonly":!_vm.editable,"disabled":_vm.disabled},domProps:{"value":_vm.nowDate},on:{"click":function($event){$event.stopPropagation();return _vm.showDatetimePicker($event)},"focus":function($event){return _vm.example('focus')},"blur":function($event){return _vm.example('blur')},"change":_vm.change,"input":function($event){return _vm.example('input', $event.target.value)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.switchingPickerStatus($event, 'keyup')}}}),(!_vm.disabled && _vm.clearBtn)?_c('section',{staticClass:"wj-close",on:{"click":function($event){_vm.currentDate = ''}}},[_vm._t("close-icon",[_c('i',{class:_vm.closeIconClass || 'iconfont icon-guanbi'})])],2):_vm._e(),_c('section',{staticClass:"wj-date-icon"},[_vm._t("date-icon",[_c('i',{class:_vm.dateIconClass || 'iconfont icon-riqi'})])],2),_c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShowPicker),expression:"isShowPicker"}],ref:"datepicker",staticClass:"wj-datepicker-content",class:{'on': _vm.isShowPicker},on:{"click":function($event){$event.stopPropagation();}}},[_c('header',{staticClass:"wj-datepicker-header"},[_vm._t("header",null,{"self":_vm._self}),_c('section',{staticClass:"wj-datepicker-header-tools"},[_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangzuo_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('yearPrev')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('monthPrev')}}}),_c('section',{staticClass:"wj-datepicker-select-date"},[_vm._v(_vm._s(_vm.pickerDate))]),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangyou_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('monthNext')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangyou_o",on:{"click":function($event){return _vm.switchoverYearAndMonth('yearNext')}}})])],2),_c('table',{staticClass:"wj-datepicker-body",attrs:{"border":"0","cellspacing":"0"}},[_c('thead',[_c('tr',_vm._l((_vm.WEEKS),function(item,i){return _c('td',{key:i},[_vm._v(_vm._s(_vm.t('datepicker.weeks.'+item)))])}),0)]),_c('tbody',_vm._l((_vm.currentMonthAllDate),function(item){return _c('tr',{key:item.index},_vm._l((item),function(v){return _c('td',{key:v.index,class:{
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2cd4b5b6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=452e597e&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{ref:"datepicker-wrap",staticClass:"wj-datepicker"},[_c('input',{ref:"ipt",staticClass:"wj-datepicker-ipt",class:{'ipt-disabled': _vm.disabled},attrs:{"type":"text","placeholder":_vm.placeholder,"readonly":!_vm.editable,"disabled":_vm.disabled},domProps:{"value":_vm.nowDate},on:{"click":function($event){$event.stopPropagation();return _vm.showDatetimePicker($event)},"focus":function($event){return _vm.example('focus')},"blur":function($event){return _vm.example('blur')},"change":_vm.change,"input":function($event){return _vm.example('input', $event.target.value)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.switchingPickerStatus($event, 'keyup')}}}),(!_vm.disabled && _vm.clearBtn)?_c('section',{staticClass:"wj-close",on:{"click":function($event){_vm.currentDate = ''}}},[_vm._t("close-icon",[_c('i',{class:_vm.closeIconClass || 'iconfont icon-guanbi'})])],2):_vm._e(),_c('section',{staticClass:"wj-date-icon"},[_vm._t("date-icon",[_c('i',{class:_vm.dateIconClass || 'iconfont icon-riqi'})])],2),_c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShowPicker),expression:"isShowPicker"}],ref:"datepicker",staticClass:"wj-datepicker-content",class:{'on': _vm.isShowPicker},on:{"click":function($event){$event.stopPropagation();}}},[_c('header',{staticClass:"wj-datepicker-header"},[_vm._t("header",null,{"self":_vm._self}),_c('section',{staticClass:"wj-datepicker-header-tools"},[_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangzuo_o",attrs:{"title":_vm.t('datepicker.prevYear')},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearPrev')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o",attrs:{"title":_vm.t('datepicker.prevMonth')},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthPrev')}}}),_c('section',{staticClass:"wj-datepicker-select-date"},[_vm._v(_vm._s(_vm.pickerDate))]),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangyou_o",attrs:{"title":_vm.t('datepicker.nextMonth')},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthNext')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangyou_o",attrs:{"title":_vm.t('datepicker.nextYear')},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearNext')}}})])],2),_c('table',{staticClass:"wj-datepicker-body",attrs:{"border":"0","cellspacing":"0"}},[_c('thead',[_c('tr',_vm._l((_vm.WEEKS),function(item,i){return _c('td',{key:i},[_vm._v(_vm._s(_vm.t('datepicker.weeks.'+item)))])}),0)]),_c('tbody',_vm._l((_vm.currentMonthAllDate),function(item){return _c('tr',{key:item.index},_vm._l((item),function(v){return _c('td',{key:v.index,class:{
                 'otherTime': v.otherTime,
                 'disabled': v.disabledDate
               },attrs:{"title":((v.year) + "-" + (v.month) + "-" + (v.date))},on:{"click":function($event){!v.otherTime && _vm.example('change', _vm.selectDate(v)) || _vm.disabledHandle(v)}}},[_c('div',[_c('section',{class:{
@@ -3723,7 +3723,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=58d5b664&
+// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=452e597e&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.match.js
 var es6_regexp_match = __webpack_require__("4917");
@@ -4148,7 +4148,7 @@ var cjs = __webpack_require__("3c4e");
 var cjs_default = /*#__PURE__*/__webpack_require__.n(cjs);
 
 // CONCATENATED MODULE: ./src/locale/lang/zh_CN.js
-var zh_CN = {
+/* harmony default export */ var zh_CN = ({
   datepicker: {
     now: '此刻',
     today: '今天',
@@ -4203,14 +4203,13 @@ var zh_CN = {
       dec: '十二月'
     }
   }
-};
-/* harmony default export */ var lang_zh_CN = (zh_CN);
+});
 // CONCATENATED MODULE: ./src/locale/index.js
 
 
 
 
-var lang = lang_zh_CN;
+var lang = zh_CN;
 var isOn = false;
 
 var locale_i18n_$t = function i18n_$t() {
@@ -4271,6 +4270,24 @@ var i18n = function i18n(fn) {
 
 
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4444,7 +4461,7 @@ var _validator = js_Wdatepicker.validator;
     placeholder: {
       type: String,
       default: function _default() {
-        return '选择日期';
+        return mixins_locale.methods.t('datepicker.selectDate');
       }
     },
     // 当前时间选中形状： square(方形),circle(圆形)

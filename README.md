@@ -3,7 +3,7 @@
 <!-- [![Build Status](https://travis-ci.org/wujiabk/datepicker.svg?branch=master)](https://travis-ci.org/wujiabk/datepicker) -->
 [![npm](https://img.shields.io/npm/v/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
 [![npm bundle size](https://img.shields.io/bundlephobia/min/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
-[![npm](https://img.shields.io/npm/dm/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujia/datepicker)
+[![npm](https://img.shields.io/npm/dm/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
 [![GitHub issues](https://img.shields.io/github/issues/wujiabk/datepicker)](https://github.com/wujiabk/datepicker/issues)
 [![npm](https://img.shields.io/npm/l/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
 
@@ -369,7 +369,7 @@ or
 ```html
   <script src="https://unpkg.com/vue"></script>
   <script src="https://unpkg.com/@wujiaxian/datepicker"></script>
-  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/en.js"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/lang/en.js"></script>
 
   <script>
     Vue.use(Wdatepicker)
@@ -389,7 +389,7 @@ Matching vue-i18n usage
   <script src="https://unpkg.com/vue"></script>
   <script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
   <script src="https://unpkg.com/@wujiaxian/datepicker"></script>
-  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/en.js"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/lang/en.js"></script>
 
   <script>
     Vue.use(VueI18n)

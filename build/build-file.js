@@ -9,8 +9,10 @@ var fileList = fs.readdirSync(localePath)
 var transform = function(filename, name) {
   return require('babel-core').transformFileSync(filename, {
     plugins: [
-      'add-module-exports',
-      ['transform-es2015-modules-umd', {loose: true}]
+      'transform-es2015-modules-umd'
+      // 'add-module-exports',
+      // ['transform-es2015-modules-umd']
+      //, {loose: true}
     ],
     moduleId: name
   })
@@ -54,7 +56,7 @@ dir.forEach(function (item) {
       exports: {}
     };`,`var mod = {
       exports: {}
-    };\n    global.W = global.W || {};\n    global.W.${m} = global.W.${m} || {};\n`).replace(new RegExp('global.' + f),n)
+    };\n    global = global || window;\n    global.W = global.W || {};\n    global.W.${m} = global.W.${m} || {};\n`).replace(new RegExp('global.' + f),n)
     // console.log(result.code)
     // 'global.W.'+file+'=global.W'
     save(resolve(__dirname, outPath, file)).write(result.code)

@@ -1,4 +1,4 @@
-export var ja = {
+export default {
   datepicker: {
     now: '現在',
     today: '今日',
@@ -54,5 +54,3 @@ export var ja = {
     }
   }
 }
-
-export default ja

@@ -20,13 +20,12 @@
 <script>
 import Vue from 'vue'
 import Wdatepicker from '../src'
-import locale from '../dist/lib/locale'
-import cn from '../dist/lib/locale/lang/ko'
+import locale from '../dist/lib/umd/locale'
+import en from '../dist/lib/umd/locale/lang/en'
+
+console.log(locale, en)
 // locale.use(cn)
-Vue.use(Wdatepicker, {
-  locale: cn
-})
-// console.log(locale.t(), Vue.locale)
+Vue.use(Wdatepicker)
 
 export default {
   name: 'app',

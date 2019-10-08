@@ -7,6 +7,7 @@
     var mod = {
       exports: {}
     };
+    global = global || window;
     global.W = global.W || {};
     global.W.lang = global.W.lang || {};
 
@@ -16,8 +17,10 @@
 })(this, function (exports) {
   'use strict';
 
-  exports.__esModule = true;
-  var ko = exports.ko = {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
     datepicker: {
       now: '지금',
       today: '오늘',
@@ -73,6 +76,4 @@
       }
     }
   };
-
-  exports.default = ko;
 });

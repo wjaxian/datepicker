@@ -42,7 +42,7 @@ export var i18n = function (fn) {
 }
 
 export default {
-  use,
-  t,
-  i18n
+  use: use,
+  t: t,
+  i18n: i18n
 }

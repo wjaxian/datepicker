@@ -29,11 +29,29 @@
       <header class="wj-datepicker-header">
         <slot name="header" :self="_self"></slot>
         <section class="wj-datepicker-header-tools">
-          <section class="tab-btn iconfont icon-jiantou_yemian_xiangzuo_o" @click="switchoverYearAndMonth('yearPrev')"></section>
-          <section class="tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o" @click="switchoverYearAndMonth('monthPrev')"></section>
-          <section class="wj-datepicker-select-date">{{pickerDate}}</section>
-          <section class="tab-btn iconfont icon-jiantou_liebiaoxiangyou_o" @click="switchoverYearAndMonth('monthNext')"></section>
-          <section class="tab-btn iconfont icon-jiantou_yemian_xiangyou_o" @click="switchoverYearAndMonth('yearNext')"></section>
+          <section 
+            :title="t('datepicker.prevYear')"
+            class="tab-btn iconfont icon-jiantou_yemian_xiangzuo_o" 
+            @click="switchoverYearAndMonth('yearPrev')"
+          ></section>
+          <section 
+            :title="t('datepicker.prevMonth')"
+            class="tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o" 
+            @click="switchoverYearAndMonth('monthPrev')"
+          ></section>
+          <section 
+            class="wj-datepicker-select-date"
+          >{{pickerDate}}</section>
+          <section 
+            :title="t('datepicker.nextMonth')"
+            class="tab-btn iconfont icon-jiantou_liebiaoxiangyou_o" 
+            @click="switchoverYearAndMonth('monthNext')"
+          ></section>
+          <section 
+            :title="t('datepicker.nextYear')"
+            class="tab-btn iconfont icon-jiantou_yemian_xiangyou_o" 
+            @click="switchoverYearAndMonth('yearNext')"
+          ></section>
         </section>
       </header>
       <table class="wj-datepicker-body" border="0" cellspacing="0">
@@ -172,7 +190,7 @@ export default {
     placeholder: {
       type: String,
       default () {
-        return '选择日期'
+        return locale.methods.t('datepicker.selectDate')
       }
     },
     // 当前时间选中形状： square(方形),circle(圆形)
@@ -478,6 +496,9 @@ export default {
         .tab-btn.iconfont {
           font-size: 24px;
           cursor: pointer;
+          &:hover {
+            color: $date_hover_color;
+          }
         }
         .wj-datepicker-select-date {
           margin: 0 10px;
@@ -525,8 +546,12 @@ export default {
             .circle, .square {
               background: $date_hover_bg;
             }
+            .on {
+              color: $on_color_status;
+              background: $date_status;
+            }
           }
-          div > section {
+          > div > section {
             &.square {
               border-radius: 3px;
             }
@@ -544,9 +569,7 @@ export default {
             }
             &.on {
               color: $on_color_status;
-              &, &:hover {
-                background: $date_status;
-              }
+              background: $date_status;
             }
           }
           &.otherTime {

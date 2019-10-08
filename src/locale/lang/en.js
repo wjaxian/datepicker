@@ -1,4 +1,4 @@
-export var en = {
+export default {
   datepicker: {
     now: 'Now',
     today: 'Today',
@@ -54,5 +54,3 @@ export var en = {
     }
   }
 }
-
-export default en

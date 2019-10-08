@@ -1,4 +1,4 @@
-export var ko = {
+export default {
   datepicker: {
     now: '지금',
     today: '오늘',
@@ -54,5 +54,3 @@ export var ko = {
     }
   }
 }
-
-export default ko
