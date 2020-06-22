@@ -60,6 +60,9 @@ class Wdatepicker {
         year = currentDate.getFullYear()
       }
 
+      if (thisMonth === 0) thisMonth = 12
+      if (thisMonth === 13) thisMonth = 1
+
       // 设置可选择的 最小时间 与 最大时间
       let cdate = this.judgeType(`${year}/${thisMonth}/${showDate}`),
           ctime = cdate.getTime()
@@ -79,9 +82,6 @@ class Wdatepicker {
         let state = this.disabledDate(currentDate, cdate, new Date())
         if (state) disabledDate = otherTime = state
       }
-
-      if (thisMonth === 0) thisMonth = 12
-      if (thisMonth === 13) thisMonth = 1
     
       currentMonthDateData.push({
         year,
