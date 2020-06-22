@@ -6,13 +6,15 @@
     </template> -->
     <!-- <template v-slot:header="{self}">
       <div></div>
-    </template>
+    </template> -->
     
     <template v-slot:footer="{self}">
-      <div @click="switchingDate(self, 'front')">前十天</div>
-      <div @click="switchingDate(self, 'now')">今天</div>
-      <div @click="switchingDate(self, 'after')">后十天</div>
-    </template> -->
+      <section class="dp-footer">
+        <div class="dp-footer-item" @click="switchingDate(self, 'front')">前十天</div>
+        <div class="dp-footer-item" @click="switchingDate(self, 'now')">今天</div>
+        <div class="dp-footer-item" @click="switchingDate(self, 'after')">后十天</div>
+      </section>
+    </template>
   </w-datepicker>
 </section>
 </template>
@@ -20,12 +22,11 @@
 <script>
 import Vue from 'vue'
 import Wdatepicker from '../src'
-import locale from '../dist/lib/umd/locale'
-import en from '../dist/lib/umd/locale/lang/en'
-
-console.log(locale, en)
-// locale.use(cn)
+import locale from '../src/locale/index'
+import cn from '../src/locale/lang/zh_CN'
+locale.use(cn)
 Vue.use(Wdatepicker)
+const cs = window.console
 
 export default {
   name: 'app',
@@ -39,36 +40,50 @@ export default {
   methods: {
     switchingDate (self, type) {
       let now = new Date()
+      let cnow = new Date(this.time)
       switch (type) {
         case 'front':
-          now.setDate(now.getDate() - 10)
+          cnow.setDate(cnow.getDate() - 10)
           break
         case 'after':
-          now.setDate(now.getDate() + 10)
+          cnow.setDate(cnow.getDate() + 10)
           break
       }
-
-      self.selectDate(now)
+      const t = type === 'now' ? now : cnow
+      self.selectDate(t)
     },
     focus (vcomponent) {
-      // console.log(vcomponent)
+      cs.log(vcomponent)
     },
     blur (vcomponent) {
-      // console.log(vcomponent)
+      cs.log(vcomponent)
     },
     change (value) {
-      // console.log(value)
+      cs.log(value)
     },
-    disabledDateFn (selectDate, monthDate, nowDate) {
-      let date = new Date('2019-09-10')
-      return date.getDate() === monthDate.getDate()
+    disabledDateFn (selectDate, monthDate) {
+      let date = new Date('2019/09/10')
+      return date.getFullYear() === monthDate.getFullYear() && date.getMonth() === monthDate.getMonth() && date.getDate() === monthDate.getDate()
     },
     disabledDate (time) {
-      // console.log(time)
+      cs.log(time)
     }
   },
   created () {
-    // console.log(locale.t('datepicker.weeks'), Vue.locale)
+    // cs.log(locale.t('datepicker.weeks'), Vue.locale)
   }
 }
 </script>
+
+<style lang="scss">
+  .dp-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+  }
+  .dp-footer-item {
+    flex: 1;
+    color: #409eff;
+    cursor: pointer;
+  }
+</style>

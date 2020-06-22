@@ -1,7 +1,8 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const path = require('path')
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
+// const path = require('path')
 const isPord = process.env.NODE_ENV === 'production'
 module.exports = {
+  publicPath: '/dist/',
   pages: {
     index: {
       entry: 'examples/main.js',
@@ -22,21 +23,22 @@ module.exports = {
       Object.assign(config.output, {
         libraryTarget: 'umd', // 指定输出格式
         umdNamedDefine: true, // 会对 UMD 的构建过程中的 AMD 模块进行命名。否则就使用匿名的 define
-        chunkFilename: '[name].js'
+        library: 'Wdatepicker',
+        chunkFilename: '[name].[hash:5].js'
       })
 
-      config.plugins = config.plugins.concat([
-        new CopyWebpackPlugin([
-          { 
-            from: path.resolve(__dirname, 'src/'), 
-            to: 'lib',
-            ignore: ['.*']
-            // transform(content, path) {
-            //   // return optimize(content);
-            // }
-          }
-        ], {copyUnmodified: true})
-      ])
+      // config.plugins = config.plugins.concat([
+      //   new CopyWebpackPlugin([
+      //     { 
+      //       from: path.resolve(__dirname, 'src/'), 
+      //       to: 'lib',
+      //       ignore: ['.*']
+      //       // transform(content, path) {
+      //       //   // return optimize(content);
+      //       // }
+      //     }
+      //   ], {copyUnmodified: true})
+      // ])
     }
   }
 }

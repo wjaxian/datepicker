@@ -1,48 +1,79 @@
-import Vue from 'vue'
-import deepmerge from 'deepmerge'
-import defaultLang from './lang/zh_CN'
-var lang = defaultLang
-var isOn = false
+(function (global, factory) {
+  if (typeof define === "function" && define.amd) {
+    define('index', ['exports', 'vue', 'deepmerge', './lang/zh_CN'], factory);
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require('vue'), require('deepmerge'), require('./lang/zh_CN'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    global = global || window;
+    global.W = global.W || {};
+    global.W.locale = global.W.locale || {};
 
-var i18n_$t = function () {
-  var $t = Object.getPrototypeOf(this || Vue).$t
-  if (typeof $t === 'function' && !!Vue.locale) {
-    if (!isOn) {
-      isOn = true
-      Vue.locale(
-        Vue.config.lang,
-        deepmerge(lang, Vue.locale(Vue.config.lang) || {}, { clone: true })
-      )
+    factory(mod.exports, global.vue, global.deepmerge, global.zh_CN);
+    global.W.locale = mod.exports;
+  }
+})(this, function (exports, _vue, _deepmerge, _zh_CN) {
+  'use strict';
+
+  exports.__esModule = true;
+  exports.i18n = exports.use = exports.t = undefined;
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+  var _deepmerge2 = _interopRequireDefault(_deepmerge);
+
+  var _zh_CN2 = _interopRequireDefault(_zh_CN);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  var lang = _zh_CN2.default;
+  var isOn = false;
+
+  var i18n_$t = function i18n_$t() {
+    var $t = Object.getPrototypeOf(this || _vue2.default).$t;
+    if (typeof $t === 'function' && !!_vue2.default.locale) {
+      if (!isOn) {
+        isOn = true;
+        _vue2.default.locale(_vue2.default.config.lang, (0, _deepmerge2.default)(lang, _vue2.default.locale(_vue2.default.config.lang) || {}, { clone: true }));
+      }
+      return $t.apply(this, arguments);
     }
-    return $t.apply(this, arguments)
-  }
-}
+  };
 
-export var t = function (path = '') {
-  var value = i18n_$t.apply(this, arguments)
-  if (value !== null && value !== undefined) return value
+  var t = exports.t = function t() {
+    var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-  var attributes = path.split('.')
-  
-  var get = function (arr, obj) {
-    if (!arr.length) return obj
-    var narr = arr.slice(1)
-    return get(narr, obj[arr[0]])
-  }
+    var value = i18n_$t.apply(this, arguments);
+    if (value !== null && value !== undefined) return value;
 
-  return get(attributes, lang)
-}
+    var attributes = path.split('.');
 
-export var use = function (nlang) {
-  lang = nlang || lang
-}
+    var get = function get(arr, obj) {
+      if (!arr.length) return obj;
+      var narr = arr.slice(1);
+      return get(narr, obj[arr[0]]);
+    };
 
-export var i18n = function (fn) {
-  i18n_$t = fn || i18n_$t
-}
+    return get(attributes, lang);
+  };
 
-export default {
-  use: use,
-  t: t,
-  i18n: i18n
-}
+  var use = exports.use = function use(nlang) {
+    lang = nlang || lang;
+  };
+
+  var i18n = exports.i18n = function i18n(fn) {
+    i18n_$t = fn || i18n_$t;
+  };
+
+  exports.default = {
+    use: use,
+    t: t,
+    i18n: i18n
+  };
+});

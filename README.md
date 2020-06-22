@@ -369,7 +369,7 @@ or
 ```html
   <script src="https://unpkg.com/vue"></script>
   <script src="https://unpkg.com/@wujiaxian/datepicker"></script>
-  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/lang/en.js"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/locale/lang/en.js"></script>
 
   <script>
     Vue.use(Wdatepicker)
@@ -389,7 +389,7 @@ Matching vue-i18n usage
   <script src="https://unpkg.com/vue"></script>
   <script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
   <script src="https://unpkg.com/@wujiaxian/datepicker"></script>
-  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/umd/locale/lang/en.js"></script>
+  <script src="https://unpkg.com/@wujiaxian/datepicker/dist/lib/locale/lang/en.js"></script>
 
   <script>
     Vue.use(VueI18n)

@@ -377,7 +377,7 @@ export default {
     }
   },
   created () {
-    let {defaultValue = '', value = '', formatDate, maxDate = '', minDate = '', disabledDate = []} = this,
+    let { defaultValue = '', value = '', formatDate, maxDate = '', minDate = '', disabledDate = [] } = this,
     currentDate = this.currentDate = value || defaultValue
     this.datepicker = new Wdatepicker({
       formatDate,

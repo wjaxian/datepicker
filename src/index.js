@@ -18,7 +18,7 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
 
-const version = '1.0.2',
+const version = require('../package.json').version,
 locale = localeIndex.use,
 i18n = localeIndex.i18n
 
@@ -32,7 +32,7 @@ export {
 }
 
 export default {
-  version: '1.0.2',
+  version,
   locale: localeIndex.use,
   i18n: localeIndex.i18n,
   install,

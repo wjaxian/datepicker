@@ -1,29 +1,33 @@
 
-var fs = require('fs');
-var save = require('file-save');
-var resolve = require('path').resolve;
-var basename = require('path').basename;
-var localePath = resolve(__dirname, '../src/')
-var fileList = fs.readdirSync(localePath)
+let fs = require('fs');
+let save = require('file-save');
+let resolve = require('path').resolve;
+let basename = require('path').basename;
+let localePath = resolve(__dirname, '../src/')
+let fileList = fs.readdirSync(localePath)
 
-var transform = function(filename, name) {
+let transform = (filename, name) => {
   return require('babel-core').transformFileSync(filename, {
+    presets: ['es2015'],
     plugins: [
-      'transform-es2015-modules-umd'
-      // 'add-module-exports',
-      // ['transform-es2015-modules-umd']
-      //, {loose: true}
+      'add-module-exports',
+      [
+        'transform-es2015-modules-umd', 
+        {
+          loose: true
+        }
+      ]
     ],
     moduleId: name
   })
 }
 
-var dir = []
-var trans = function (arr, n) {
+let dir = []
+let trans = (arr, n) => {
   n = n || ''
-  arr.filter(function (file) {
+  arr.filter(file => {
     return file !== '.DS_Store'
-  }).forEach(function(file) {
+  }).forEach(file => {
     if (!/[a-z]+(?=\.)/i.test(file)) {
       n = n && n + '/'
       dir.push({
@@ -38,18 +42,18 @@ var trans = function (arr, n) {
 
 trans(fileList)
 
-dir.forEach(function (item) {
-  var dir = item.dir
-  var outPath = '../dist/lib/umd/' + item.outPath
-  fs.readdirSync(dir).filter(function(file) {
+dir.forEach(item => {
+  let dir = item.dir
+  let outPath = '../dist/lib/' + item.outPath
+  fs.readdirSync(dir).filter(file => {
     return /\.js$/.test(file)
-  }).forEach(function(file) {
-    var name = basename(file, '.js')
-    var result = transform(dir+'/'+file, name)
-    var m = dir.split('/')
+  }).forEach(file => {
+    let name = basename(file, '.js')
+    let result = transform(dir+'/'+file, name)
+    let m = dir.split('/')
     m = m[m.length-1]
-    var f = file.replace(/\.js/,'')
-    var n = f
+    let f = file.replace(/\.js/,'')
+    let n = f
     if (f == 'index') n = m
     n = 'global.W.' + m
     result.code = result.code.replace(`var mod = {

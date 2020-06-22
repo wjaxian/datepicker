@@ -2612,6 +2612,13 @@ module.exports = __webpack_require__("35e8");
 
 /***/ }),
 
+/***/ "9224":
+/***/ (function(module) {
+
+module.exports = {"name":"@wujiaxian/datepicker","description":"A C-End Date Selector Component Based on Vue Development","version":"1.0.5","author":"wujia <web@wujiabk.com>","main":"dist/Wdatepicker.umd.min.js","style":"dist/Wdatepicker.css","license":"MIT","bugs":{"url":"https://github.com/wujiabk/datepicker/issues"},"repository":{"type":"git","url":"https://github.com/wujiabk/datepicker"},"keywords":["vue-datepicler","datepicker","w-datepicker","Wdatepicker","@wujiaxian/datepicker"],"private":false,"scripts":{"dev":"vue-cli-service serve","build:entry":"node build/build-entry.js","build:file":"node build/build-file.js","build":"vue-cli-service build --target lib --name Wdatepicker --dest dist src/index.js && npm run build:file","pub":"npm publish --access=public","lint":"vue-cli-service lint"},"dependencies":{"core-js":"^2.6.5","vue":"^2.6.10"},"devDependencies":{"@vue/cli-plugin-babel":"^3.8.0","@vue/cli-plugin-eslint":"^3.8.0","@vue/cli-service":"^3.8.0","babel-core":"^6.26.3","babel-eslint":"^10.0.1","babel-plugin-add-module-exports":"^1.0.2","babel-plugin-transform-es2015-modules-umd":"^6.24.1","babel-preset-es2015":"^6.24.1","copy-webpack-plugin":"^5.0.4","css-loader":"^3.2.0","eslint":"^5.16.0","eslint-plugin-vue":"^5.0.0","file-save":"^0.2.0","fs":"0.0.1-security","json-templater":"^1.2.0","node-sass":"^4.12.0","sass-loader":"^8.0.0","terser-webpack-plugin":"^2.1.2","uppercamelcase":"^3.0.0","vue-template-compiler":"^2.6.10","webpack-cli":"^3.3.9","webpack-node-externals":"^1.7.2"},"eslintConfig":{"root":true,"env":{"node":true},"extends":["plugin:vue/essential","eslint:recommended"],"rules":{},"parserOptions":{"parser":"babel-eslint"}},"postcss":{"plugins":{"autoprefixer":{}}},"browserslist":["> 1%","last 2 versions"]};
+
+/***/ }),
+
 /***/ "9aa9":
 /***/ (function(module, exports) {
 
@@ -3710,7 +3717,7 @@ var es6_function_name = __webpack_require__("7f7f");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2cd4b5b6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=452e597e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"399e9682-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=e2ed5322&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('section',{ref:"datepicker-wrap",staticClass:"wj-datepicker"},[_c('input',{ref:"ipt",staticClass:"wj-datepicker-ipt",class:{'ipt-disabled': _vm.disabled},attrs:{"type":"text","placeholder":_vm.placeholder,"readonly":!_vm.editable,"disabled":_vm.disabled},domProps:{"value":_vm.nowDate},on:{"click":function($event){$event.stopPropagation();return _vm.showDatetimePicker($event)},"focus":function($event){return _vm.example('focus')},"blur":function($event){return _vm.example('blur')},"change":_vm.change,"input":function($event){return _vm.example('input', $event.target.value)},"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.switchingPickerStatus($event, 'keyup')}}}),(!_vm.disabled && _vm.clearBtn)?_c('section',{staticClass:"wj-close",on:{"click":function($event){_vm.currentDate = ''}}},[_vm._t("close-icon",[_c('i',{class:_vm.closeIconClass || 'iconfont icon-guanbi'})])],2):_vm._e(),_c('section',{staticClass:"wj-date-icon"},[_vm._t("date-icon",[_c('i',{class:_vm.dateIconClass || 'iconfont icon-riqi'})])],2),_c('transition',{attrs:{"name":"fade"}},[_c('section',{directives:[{name:"show",rawName:"v-show",value:(_vm.isShowPicker),expression:"isShowPicker"}],ref:"datepicker",staticClass:"wj-datepicker-content",class:{'on': _vm.isShowPicker},on:{"click":function($event){$event.stopPropagation();}}},[_c('header',{staticClass:"wj-datepicker-header"},[_vm._t("header",null,{"self":_vm._self}),_c('section',{staticClass:"wj-datepicker-header-tools"},[_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangzuo_o",attrs:{"title":_vm.t('datepicker.prevYear')},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearPrev')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangzuo_o",attrs:{"title":_vm.t('datepicker.prevMonth')},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthPrev')}}}),_c('section',{staticClass:"wj-datepicker-select-date"},[_vm._v(_vm._s(_vm.pickerDate))]),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_liebiaoxiangyou_o",attrs:{"title":_vm.t('datepicker.nextMonth')},on:{"click":function($event){return _vm.switchoverYearAndMonth('monthNext')}}}),_c('section',{staticClass:"tab-btn iconfont icon-jiantou_yemian_xiangyou_o",attrs:{"title":_vm.t('datepicker.nextYear')},on:{"click":function($event){return _vm.switchoverYearAndMonth('yearNext')}}})])],2),_c('table',{staticClass:"wj-datepicker-body",attrs:{"border":"0","cellspacing":"0"}},[_c('thead',[_c('tr',_vm._l((_vm.WEEKS),function(item,i){return _c('td',{key:i},[_vm._v(_vm._s(_vm.t('datepicker.weeks.'+item)))])}),0)]),_c('tbody',_vm._l((_vm.currentMonthAllDate),function(item){return _c('tr',{key:item.index},_vm._l((item),function(v){return _c('td',{key:v.index,class:{
                 'otherTime': v.otherTime,
                 'disabled': v.disabledDate
@@ -3723,7 +3730,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=452e597e&
+// CONCATENATED MODULE: ./packages/Wdatepicker/src/Wdatepicker.vue?vue&type=template&id=e2ed5322&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.match.js
 var es6_regexp_match = __webpack_require__("4917");
@@ -4846,12 +4853,13 @@ if (typeof window !== 'undefined' && window.Vue) {
   src_install(window.Vue);
 }
 
-var version = '1.0.2',
+var version = __webpack_require__("9224").version,
     src_locale = locale.use,
     src_i18n = locale.i18n;
 
+
 /* harmony default export */ var src = ({
-  version: '1.0.2',
+  version: version,
   locale: locale.use,
   i18n: locale.i18n,
   install: src_install,
