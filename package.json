@@ -1,7 +1,7 @@
 {
   "name": "@wujiaxian/datepicker",
   "description": "A C-End Date Selector Component Based on Vue Development",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "wujia <web@wujiabk.com>",
   "main": "dist/Wdatepicker.umd.min.js",
   "style": "dist/Wdatepicker.css",
