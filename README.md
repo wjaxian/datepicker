@@ -117,7 +117,7 @@ export default {
 
     },
     // Click is not the date of that month, switch to that month or select the date of that month or do nothing. Operations are prohibited at times other than maximum and minimum.
-    disabledDate ({year, month, date, disabledDate, thisMonth}) {
+    disabledDate ({ year, month, date, disabledDate, thisMonth }) {
 
     }
   }
@@ -203,16 +203,17 @@ export default {
     },
     switchingDate (componentInstance, type) {
       let now = new Date()
+      let cnow = new Date(this.date)
       switch (type) {
         case 'front':
-          now.setDate(now.getDate() - 10)
+          cnow.setDate(cnow.getDate() - 10)
           break
         case 'after':
-          now.setDate(now.getDate() + 10)
+          cnow.setDate(cnow.getDate() + 10)
           break
       }
-
-      componentInstance.selectDate(now)
+      const t = type === 'now' ? now : cnow
+      componentInstance.selectDate(t)
     }
   }
 }
@@ -261,8 +262,8 @@ export default {
   },
   methods: {
     disableDate (currentDate, monthDate, nowDate) {
-      let disableDate = new Date('2019/09/18').getDate()
-      return disableDate === monthDate.getDate()
+      let date = new Date('2019/09/10')
+      return date.getFullYear() === monthDate.getFullYear() && date.getMonth() === monthDate.getMonth() && date.getDate() === monthDate.getDate()
     }
   }
 }
