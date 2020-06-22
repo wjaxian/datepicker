@@ -2615,7 +2615,7 @@ module.exports = __webpack_require__("35e8");
 /***/ "9224":
 /***/ (function(module) {
 
-module.exports = {"name":"@wujiaxian/datepicker","description":"A C-End Date Selector Component Based on Vue Development","version":"1.0.5","author":"wujia <web@wujiabk.com>","main":"dist/Wdatepicker.umd.min.js","style":"dist/Wdatepicker.css","license":"MIT","bugs":{"url":"https://github.com/wujiabk/datepicker/issues"},"repository":{"type":"git","url":"https://github.com/wujiabk/datepicker"},"keywords":["vue-datepicler","datepicker","w-datepicker","Wdatepicker","@wujiaxian/datepicker"],"private":false,"scripts":{"dev":"vue-cli-service serve","build:entry":"node build/build-entry.js","build:file":"node build/build-file.js","build":"vue-cli-service build --target lib --name Wdatepicker --dest dist src/index.js && npm run build:file","pub":"npm publish --access=public","lint":"vue-cli-service lint"},"dependencies":{"core-js":"^2.6.5","vue":"^2.6.10"},"devDependencies":{"@vue/cli-plugin-babel":"^3.8.0","@vue/cli-plugin-eslint":"^3.8.0","@vue/cli-service":"^3.8.0","babel-core":"^6.26.3","babel-eslint":"^10.0.1","babel-plugin-add-module-exports":"^1.0.2","babel-plugin-transform-es2015-modules-umd":"^6.24.1","babel-preset-es2015":"^6.24.1","copy-webpack-plugin":"^5.0.4","css-loader":"^3.2.0","eslint":"^5.16.0","eslint-plugin-vue":"^5.0.0","file-save":"^0.2.0","fs":"0.0.1-security","json-templater":"^1.2.0","node-sass":"^4.12.0","sass-loader":"^8.0.0","terser-webpack-plugin":"^2.1.2","uppercamelcase":"^3.0.0","vue-template-compiler":"^2.6.10","webpack-cli":"^3.3.9","webpack-node-externals":"^1.7.2"},"eslintConfig":{"root":true,"env":{"node":true},"extends":["plugin:vue/essential","eslint:recommended"],"rules":{},"parserOptions":{"parser":"babel-eslint"}},"postcss":{"plugins":{"autoprefixer":{}}},"browserslist":["> 1%","last 2 versions"]};
+module.exports = {"name":"@wujiaxian/datepicker","description":"A C-End Date Selector Component Based on Vue Development","version":"1.0.6","author":"wujia <web@wujiabk.com>","main":"dist/Wdatepicker.umd.min.js","style":"dist/Wdatepicker.css","license":"MIT","bugs":{"url":"https://github.com/wujiabk/datepicker/issues"},"repository":{"type":"git","url":"https://github.com/wujiabk/datepicker"},"keywords":["vue-datepicler","datepicker","w-datepicker","Wdatepicker","@wujiaxian/datepicker"],"private":false,"scripts":{"dev":"vue-cli-service serve","build:entry":"node build/build-entry.js","build:file":"node build/build-file.js","build":"vue-cli-service build --target lib --name Wdatepicker --dest dist src/index.js && npm run build:file","pub":"npm publish --access=public","lint":"vue-cli-service lint"},"dependencies":{"core-js":"^2.6.5","vue":"^2.6.10"},"devDependencies":{"@vue/cli-plugin-babel":"^3.8.0","@vue/cli-plugin-eslint":"^3.8.0","@vue/cli-service":"^3.8.0","babel-core":"^6.26.3","babel-eslint":"^10.0.1","babel-plugin-add-module-exports":"^1.0.2","babel-plugin-transform-es2015-modules-umd":"^6.24.1","babel-preset-es2015":"^6.24.1","copy-webpack-plugin":"^5.0.4","css-loader":"^3.2.0","eslint":"^5.16.0","eslint-plugin-vue":"^5.0.0","file-save":"^0.2.0","fs":"0.0.1-security","json-templater":"^1.2.0","node-sass":"^4.12.0","sass-loader":"^8.0.0","terser-webpack-plugin":"^2.1.2","uppercamelcase":"^3.0.0","vue-template-compiler":"^2.6.10","webpack-cli":"^3.3.9","webpack-node-externals":"^1.7.2"},"eslintConfig":{"root":true,"env":{"node":true},"extends":["plugin:vue/essential","eslint:recommended"],"rules":{},"parserOptions":{"parser":"babel-eslint"}},"postcss":{"plugins":{"autoprefixer":{}}},"browserslist":["> 1%","last 2 versions"]};
 
 /***/ }),
 
@@ -3934,8 +3934,10 @@ function () {
           thisMonth == 13 && (year = currentDate.getFullYear() + 1);
         } else {
           year = currentDate.getFullYear();
-        } // 设置可选择的 最小时间 与 最大时间
+        }
 
+        if (thisMonth === 0) thisMonth = 12;
+        if (thisMonth === 13) thisMonth = 1; // 设置可选择的 最小时间 与 最大时间
 
         var cdate = _this.judgeType("".concat(year, "/").concat(thisMonth, "/").concat(showDate)),
             ctime = cdate.getTime();
@@ -3959,8 +3961,6 @@ function () {
           if (state) disabledDate = otherTime = state;
         }
 
-        if (thisMonth === 0) thisMonth = 12;
-        if (thisMonth === 13) thisMonth = 1;
         currentMonthDateData.push({
           year: year,
           date: showDate,

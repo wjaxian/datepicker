@@ -1,6 +1,6 @@
 # Wdatepicker
 
-<!-- [![Build Status](https://travis-ci.org/wujiabk/datepicker.svg?branch=master)](https://travis-ci.org/wujiabk/datepicker) -->
+[![Build Status](https://travis-ci.org/wujiabk/datepicker.svg?branch=master)](https://travis-ci.org/wujiabk/datepicker)
 [![npm](https://img.shields.io/npm/v/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
 [![npm bundle size](https://img.shields.io/bundlephobia/min/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
 [![npm](https://img.shields.io/npm/dm/@wujiaxian/datepicker)](https://www.npmjs.com/package/@wujiaxian/datepicker)
