@@ -9,4 +9,3 @@ before_install:
 - export TRAVIS_COMMIT_EMAIL="$(git log --no-merges -n 1 --format=%ae)"
 after_success:
 # - sh build/deploy-ci.sh
-# - cat ./test/unit/coverage/lcov.info | ./node_modules/.bin/coveralls
